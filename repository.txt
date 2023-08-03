@@ -1,0 +1,9 @@
+raw_data_old,/Users/sunxiaoyi/Desktop/901/xiaoyi_ground truth/eeg_raw_data.txt
+raw_data_final,/Users/sunxiaoyi/Desktop/901/xiaoyi_ground truth/eeg_raw_data.txt
+processed_data,/Users/sunxiaoyi/Desktop/901/xiaoyi_ground truth/eeg_data.csv
+new_data,/Users/sunxiaoyi/Desktop/901/xiaoyi_ground truth/eeg_data.csv
+updated_data,/Users/sunxiaoyi/Desktop/901/xiaoyi_ground truth/eeg_data.csv
+distance_matrix,/Users/sunxiaoyi/Desktop/901/xiaoyi_ground truth/eeg_data.xlsx
+group_space_data,/Users/sunxiaoyi/Desktop/901/xiaoyi_ground truth/group_space.csv
+subject_weights_data,/Users/sunxiaoyi/Desktop/901/xiaoyi_ground truth/subject_space.csv
+individual_ground_truth,/Users/sunxiaoyi/Desktop/901/xiaoyi_ground truth/individual_ground_truth.csv
