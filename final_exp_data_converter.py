@@ -65,7 +65,7 @@ def convert_experiment(survey_path, df_out_path):
                 value = responses_respondent.loc[:,
                         [True if re.search("LABELVALUE_" + slide + "_" + "[\\w\\W]*" + emotion, column)
                          else False for column in responses.columns]].values[0][0]
-                if value == "":
+                if value == "" or value is None:
                     values.append(0)
                 else:
                     values.append(int(value) - 1)

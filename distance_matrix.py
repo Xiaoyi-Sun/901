@@ -16,9 +16,9 @@ def process_and_combine_similarities(input_file, output_file):
     emotions_11 = ['Amused*', 'Angry*', 'Anxious*', 'Bored*', 'Calm*', 'Content*', 'Excited*', 'Fearful*',
                    'Happy*', 'Negative*', 'Positive*', 'Sad*']
 
-    # Get unique respondents and stimuli
-    respondents = df['respondent'].unique()
-    stimuli = df['stimulus'].unique()
+    # Get unique respondents and stimuli (using drop_duplicates to ensure uniqueness)
+    respondents = df['respondent'].drop_duplicates()
+    stimuli = df['stimulus'].drop_duplicates()
 
     # Initialize an empty dictionary to store individual similarity matrices for each respondent
     individual_similarity_matrices = {}
@@ -73,4 +73,5 @@ def process_and_combine_similarities(input_file, output_file):
 
     # Notify that the saving process is completed
     print(f"All individual similarity matrices are combined and saved to '{output_file}' on a single sheet.")
+
 
