@@ -9,9 +9,9 @@
 import pandas as pd
 
 
-def concatenate_dataframes(new_dataframe_path, updated_dataframe_path):
+def concatenate_dataframes(new_dataframe_path, new_dataframe_path_2, updated_dataframe):
     new_df = pd.read_csv(new_dataframe_path)
-    updated_df = pd.read_csv(updated_dataframe_path)
-    updated_df = pd.concat([new_df, updated_df])
-    updated_df.to_csv(updated_dataframe_path, index=False)
+    new_df_2 = pd.read_csv(new_dataframe_path_2)
+    updated_df = pd.concat([new_df, new_df_2])
+    updated_df.to_csv(updated_dataframe, index=False)
 

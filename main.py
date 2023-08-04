@@ -102,8 +102,8 @@ processed_data = repository_data[repository_name_3]
 repository_name_4 = "new_data"
 new_data = repository_data[repository_name_4]
 
-repository_name_5 = "updated_data"
-updated_data = repository_data[repository_name_5]
+repository_name_5 = "new_data_2"
+new_data_2 = repository_data[repository_name_5]
 
 repository_name_6 = "distance_matrix"
 distance_matrix = repository_data[repository_name_6]
@@ -116,6 +116,9 @@ subject_weights_data = repository_data[repository_name_8]
 
 repository_name_9 = "individual_ground_truth"
 individual_ground_truth = repository_data[repository_name_9]
+
+repository_name_10 = "updated_data"
+updated_data = repository_data[repository_name_10]
 
 
 while True:
@@ -135,7 +138,7 @@ while True:
     elif choice == "2":
         convert_experiment(raw_data_final, processed_data)
     elif choice == "3":
-        concatenate_dataframes(new_data, updated_data)
+        concatenate_dataframes(new_data, new_data_2,updated_data)
     elif choice == "4":
         process_and_combine_similarities(processed_data, distance_matrix)
     elif choice == "5":

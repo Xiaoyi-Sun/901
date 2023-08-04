@@ -92,7 +92,7 @@ def convert_experiment(survey_path, df_out_path):
         'Survey_N': 'N_LN',
         'Survey_O': 'O_LN',
         'Survey_P': 'P_HP',
-        'Survey_U': 'U_Ne ',
+        'Survey_U': 'U_Ne',
         'Survey_V': 'V_Ne',
         'Survey_W': 'W_HN',
         'Survey_q': 'Q_HP'

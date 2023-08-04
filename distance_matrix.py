@@ -19,7 +19,7 @@ def process_and_combine_similarities(input_file, output_file):
     # Get unique respondents and stimuli (using drop_duplicates to ensure uniqueness)
     respondents = df['respondent'].drop_duplicates()
     stimuli = df['stimulus'].drop_duplicates()
-
+    print(stimuli)
     # Initialize an empty dictionary to store individual similarity matrices for each respondent
     individual_similarity_matrices = {}
 
