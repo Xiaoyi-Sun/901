@@ -10,74 +10,83 @@ from combine_data import concatenate_dataframes
 from distance_matrix import process_and_combine_similarities
 from subject_weights_converter import process_data_and_save_to_csv
 from individual_map import process_and_save_data
-
 import pandas as pd
+import matplotlib.pyplot as plt
+import os
+from sklearn.preprocessing import MinMaxScaler
 
 # Transfer SPSS data to csv file, replace when needed
 group_space = """\
-    1      A1_LP       .9234   -.7453
-    2      A2_LP      1.0571   -.1295
-    3      A3_LP       .7585   1.0165
-    4      A4_LP      1.0828   -.3490
-    5      A_HN      -1.5516    .4468
-    6      B_HN      -1.7621    .9994
-    7      C_LN       -.7134  -1.2636
-    8      F_HN       -.7537   1.3125
-    9      G_HP        .9034   1.2468
-   10      H_HP       1.0188   1.3441
-   11      J_Ne        .3534  -1.1146
-   12      K_Ne        .2663  -1.2796
-   13      M_LN       -.9606   -.7672
-   14      N_LN      -1.1905   -.4857
-   15      O_LN       -.8392  -1.1695
-   16      P_HP        .9683   1.2652
-   17      Q_HP       1.0794   1.2712
-   18      U_Ne        .5032   -.9808
-   19      V_Ne        .3194   -.9988
-   20      W_HN      -1.4631    .3810
+    1      A1_LP       .9196   -.7567
+    2      A2_LP      1.0982   -.2382
+    3      A3_LP       .7823    .9654
+    4      A4_LP      1.1107   -.2626
+    5      A_HN      -1.5092    .4290
+    6      B_HN      -1.7222    .7918
+    7      C_LN       -.7728  -1.1605
+    8      F_HN       -.7472   1.3061
+    9      G_HP        .8925   1.2453
+   10      H_HP       1.0100   1.3979
+   11      J_Ne        .3498  -1.1371
+   12      K_Ne        .2503  -1.3021
+   13      M_LN      -1.0307   -.7214
+   14      N_LN      -1.1942   -.4970
+   15      O_LN       -.8761  -1.1255
+   16      P_HP        .8871   1.3746
+   17      Q_HP       1.0534   1.3605
+   18      U_Ne        .5605   -.9875
+   19      V_Ne        .3830  -1.0587
+   20      W_HN      -1.4451    .3768
 """
 
 
 subject_weights = """\
-      1     .4745    .4816    .4852
-      2     .5386    .0050    .0058
-      3     .2803    .6703    .1876
-      4     .1772    .4774    .2793
-      5     .0160    .7205    .3100
-      6     .2168    .7521    .2344
-      7     .5805    .1048    .1352
-      8     .4367    .2826    .2632
-      9     .5847    .1565    .2041
-     10     .2133    .4501    .2794
-     11     .1094    .6644    .3484
-     12     .2311    .6565    .1998
-     13     .0492    .7702    .3145
-     14     .0075    .6852    .3059
-     15     .1646    .5222    .2992
-     16     .4697    .7795    .1521
-     17     .2110    .6895    .2170
-     18     .3035    .8089    .2173
-     19     .3010    .7979    .2154
-     20     .2704    .5795    .3962
-     21     .4163    .7671    .1670
-     22     .4931    .0957    .1003
-     23     .0384    .5698    .2670
-     24     .2686    .4861    .3313
-     25     .4530    .8880    .1795
-     26     .2472    .3730    .2451
-     27     .0269    .6811    .3134
-     28     .4566    .7622    .1529
-     29     .2717    .7023    .1995
-     30     .2461    .7877    .2337
-     31     .1395    .6940    .3819
-     32     .2078    .7293    .2308
-     33     .3305    .3121    .2372
-     34     .2182    .6635    .2063
-     35     .5267    .1702    .1926
-     36     .2354    .5102    .3287
-     37     .1411    .6570    .3625
-     38     .0910    .5782    .2944
-     39     .0064    .7289    .3248
+      1     .4782    .0287    .0298
+      2     .2316    .7499    .2332
+      3     .1800    .6381    .3835
+      4     .1905    .4478    .2738
+      5     .1977    .4907    .3036
+      6     .1643    .6333    .3710
+      7     .4827    .0112    .0118
+      8     .2350    .4302    .2832
+      9     .5108    .1473    .1643
+     10     .0370    .5924    .2522
+     11     .0643    .7627    .3111
+     12     .4340    .4971    .4709
+     13     .3397    .8111    .2088
+     14     .0027    .7298    .3279
+     15     .1037    .6458    .3432
+     16     .2621    .3466    .2389
+     17     .2261    .4846    .3143
+     18     .3524    .7440    .1872
+     19     .0052    .6429    .2877
+     20     .3679    .6823    .1668
+     21     .4415    .1127    .1084
+     22     .1387    .5309    .2984
+     23     .4112    .7675    .1726
+     24     .2617    .8470    .2503
+     25     .2288    .7670    .2397
+     26     .2195    .5976    .3834
+     27     .1476    .6855    .3908
+     28     .2607    .7369    .2181
+     29     .2906    .7967    .2239
+     30     .3006    .3019    .2225
+     31     .0274    .7497    .3240
+     32     .0644    .5621    .2806
+     33     .1780    .6306    .3777
+     34     .3390    .7265    .1873
+     35     .4859    .1738    .1835
+     36     .1106    .6337    .2401
+     37     .1862    .5079    .3083
+     38     .1596    .5538    .3219
+     39     .2112    .8323    .2678
+     40     .0347    .6736    .2878
+     41     .3025    .8152    .2244
+     42     .4232    .7620    .1674
+     43     .1454    .6768    .3845
+     44     .1886    .4091    .2494
+     45     .2672    .6300    .1845
+     46     .1575    .5430    .3146
 """
 
 # Create a dictionary to store repositories
@@ -105,6 +114,9 @@ new_data = repository_data[repository_name_4]
 repository_name_5 = "new_data_2"
 new_data_2 = repository_data[repository_name_5]
 
+repository_name_11 = "updated_data"
+updated_data = repository_data[repository_name_11]
+
 repository_name_6 = "distance_matrix"
 distance_matrix = repository_data[repository_name_6]
 
@@ -130,6 +142,8 @@ while True:
     print("5. convert group space and subject weights from string to csv")
     print("6. compute individual ground_truth")
     print("7. Exit")
+    print("8. compute individual ground_truth maps")
+    print("9. compute group space map")
 
     choice = input("Enter the number of the function you want to choose: ")
 
@@ -143,13 +157,86 @@ while True:
         process_and_combine_similarities(processed_data, distance_matrix)
     elif choice == "5":
         process_data_and_save_to_csv(group_space, group_space_data, subject_weights, subject_weights_data)
+        # Read the CSV file
+
     elif choice == "6":
         group_space = np.genfromtxt(group_space_data, delimiter=',')
         subject_weights = np.genfromtxt(subject_weights_data, delimiter=',')
         process_and_save_data(individual_ground_truth, group_space, subject_weights)
+
+    elif choice == "8":
+        # Create a folder to save images
+        if not os.path.exists('individual_plots'):
+            os.makedirs('individual_plots')
+        # Read data from CSV
+        data = pd.read_csv(individual_ground_truth)
+        # Group data by respondent
+        # Group data by respondent
+        grouped_data = data.groupby(data.columns[0])  # Assuming the first column is 'Participant'
+
+        # Create scatter plots for each respondent
+        for participant, group in grouped_data:
+            plt.figure(figsize=(8, 6))
+            plt.scatter(group.iloc[:, 2], group.iloc[:, 3], c='blue', marker='o', label='Stimuli')
+
+            for i, row in group.iterrows():
+                plt.annotate(row[1], (row[2], row[3]))  # Assuming 'Stimulus_Name' is the second column
+
+            plt.xlabel("Valence")
+            plt.ylabel("Arousal")
+            plt.title(f"Valence vs. Arousal for Respondent {participant}")
+            plt.axhline(0, color='black', linewidth=0.5)
+            plt.axvline(0, color='black', linewidth=0.5)
+            plt.xlim(-1, 1)  # Set x-axis range to -1 to 1
+            plt.ylim(-1, 1)  # Set y-axis range to -1 to 1
+            plt.grid(True, linestyle='--', alpha=0.7)
+            plt.legend()
+            # Save the plot as an image in the folder
+            plt.savefig(f'individual_plots/plot_{participant}.png')
+
+            plt.close()  # Close the figure to free up memory
     elif choice == "7":
         print("Exiting the program.")
         break
+    elif choice == "9":
+        # Read the CSV file
+        if not os.path.exists('group_space_plot'):
+            os.makedirs('group_space_plot')
+        df = pd.read_csv(group_space_data, header=None)
+
+        # Normalize the data using Min-Max scaling
+        scaler = MinMaxScaler(feature_range=(-1, 1))
+        normalized_data = scaler.fit_transform(df)
+
+        # Assign names to each row
+        row_names = [
+            "A1_LP", "A2_LP", "A3_LP", "A4_LP", "A_HN",
+            "B_HN", "C_LN", "F_HN", "G_HP", "H_HP",
+            "J_Ne", "K_Ne", "M_LN", "N_LN", "O_LN",
+            "P_HP", "Q_HP", "U_Ne", "V_Ne", "W_HN"
+        ]
+
+        # Create a DataFrame with normalized data and row names
+        df_normalized = pd.DataFrame(normalized_data, columns=['x', 'y'])
+        df_normalized['names'] = row_names
+
+        # Plot the normalized data points and label them
+        plt.figure(figsize=(10, 8))
+        plt.scatter(df_normalized['x'], df_normalized['y'], color='b', marker='o')
+
+        for i, row in df_normalized.iterrows():
+            plt.annotate(row['names'], (row['x'], row['y']), textcoords="offset points", xytext=(0, 10), ha='center')
+
+        plt.xlabel('valence')
+        plt.ylabel('arousal')
+        plt.title('group_space')
+        plt.axhline(0, color='black', linewidth=0.5)
+        plt.axvline(0, color='black', linewidth=0.5)
+        plt.grid(True)
+        plt.savefig(f'group_space_plot/group_space_plot.png')
+        plt.show()
+        plt.close()  # Close the figure to free up memory
+
     else:
         print("Invalid choice.")
 
