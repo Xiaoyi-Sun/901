@@ -102,20 +102,20 @@ with open("repository.txt", "r") as txt_file:
 repository_name_1 = "raw_data_old"
 raw_data_old = repository_data[repository_name_1]
 
-repository_name_2 = "raw_data_final"
-raw_data_final = repository_data[repository_name_2]
+repository_name_2 = "raw_data_new"
+raw_data_new = repository_data[repository_name_2]
 
 repository_name_3 = "processed_data"
 processed_data = repository_data[repository_name_3]
 
-repository_name_4 = "new_data"
-new_data = repository_data[repository_name_4]
+repository_name_4 = "old_tata"
+old_data = repository_data[repository_name_4]
 
-repository_name_5 = "new_data_2"
-new_data_2 = repository_data[repository_name_5]
+repository_name_5 = "new_data"
+new_data = repository_data[repository_name_5]
 
-repository_name_11 = "updated_data"
-updated_data = repository_data[repository_name_11]
+repository_name_11 = "old_new_combined_data"
+old_new_combined_data = repository_data[repository_name_11]
 
 repository_name_6 = "distance_matrix"
 distance_matrix = repository_data[repository_name_6]
@@ -150,9 +150,9 @@ while True:
     if choice == "1":
         convert_old_experiment(raw_data_old, processed_data)
     elif choice == "2":
-        convert_experiment(raw_data_final, processed_data)
+        convert_experiment(raw_data_new, processed_data)
     elif choice == "3":
-        concatenate_dataframes(new_data, new_data_2,updated_data)
+        concatenate_dataframes(old_data, new_data, old_new_combined_data)
     elif choice == "4":
         process_and_combine_similarities(processed_data, distance_matrix)
     elif choice == "5":
